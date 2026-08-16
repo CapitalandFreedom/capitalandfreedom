@@ -1,0 +1,61 @@
+# Netlify configuration for capitalandfreedom.com
+# No build step. The repo is the site.
+
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Tidy URLs: /coaching works as well as /coaching.html
+[[redirects]]
+  from = "/coaching"
+  to = "/coaching.html"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/free"
+  to = "/free.html"
+  status = 301
+
+[[redirects]]
+  from = "/newsletter"
+  to = "/newsletter.html"
+  status = 301
+
+[[redirects]]
+  from = "/faq"
+  to = "/faq.html"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 301
+
+# Short link to hand out on Instagram
+[[redirects]]
+  from = "/kit"
+  to = "/free.html"
+  status = 302
+
+[[redirects]]
+  from = "/apply"
+  to = "/coaching.html#apply"
+  status = 302
