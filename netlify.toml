@@ -1,61 +1,45 @@
-# Netlify configuration for capitalandfreedom.com
-# No build step. The repo is the site.
-
 [build]
-  publish = "."
   command = ""
-
+  publish = "public"
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+[dev]
+  publish = "public"
+  framework = "#static"
+  port = 8888
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
+    X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
-
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Tidy URLs: /coaching works as well as /coaching.html
+    Cache-Control = "public, max-age=3600, must-revalidate"
 [[redirects]]
   from = "/coaching"
-  to = "/coaching.html"
+  to = "/start"
   status = 301
-
 [[redirects]]
-  from = "/about"
-  to = "/about.html"
+  from = "/coaching.html"
+  to = "/start"
   status = 301
-
-[[redirects]]
-  from = "/free"
-  to = "/free.html"
-  status = 301
-
-[[redirects]]
-  from = "/newsletter"
-  to = "/newsletter.html"
-  status = 301
-
-[[redirects]]
-  from = "/faq"
-  to = "/faq.html"
-  status = 301
-
-[[redirects]]
-  from = "/contact"
-  to = "/contact.html"
-  status = 301
-
-# Short link to hand out on Instagram
-[[redirects]]
-  from = "/kit"
-  to = "/free.html"
-  status = 302
-
 [[redirects]]
   from = "/apply"
-  to = "/coaching.html#apply"
+  to = "/start"
+  status = 301
+[[redirects]]
+  from = "/kit"
+  to = "/free"
   status = 302
+[[redirects]]
+  from = "/notes/cost-of-waiting*"
+  to = "/notes/savings-habit"
+  status = 301
+[[redirects]]
+  from = "/notes/fixed-deposit-safe*"
+  to = "/notes/before-investing"
+  status = 301
