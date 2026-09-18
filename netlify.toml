@@ -23,14 +23,17 @@
   from = "/coaching"
   to = "/start"
   status = 301
+  force = true
 [[redirects]]
   from = "/coaching.html"
   to = "/start"
   status = 301
+  force = true
 [[redirects]]
   from = "/apply"
   to = "/start"
   status = 301
+  force = true
 [[redirects]]
   from = "/kit"
   to = "/free"
@@ -39,7 +42,9 @@
   from = "/notes/cost-of-waiting*"
   to = "/notes/savings-habit"
   status = 301
+  force = true
 [[redirects]]
   from = "/notes/fixed-deposit-safe*"
   to = "/notes/before-investing"
   status = 301
+  force = true
