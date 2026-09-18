@@ -1,39 +1,15 @@
-/* Capital & Freedom | site.js
-   Two jobs only: open the menu on small screens, and reveal
-   sections gently as you scroll. Nothing else runs. */
-
 (function () {
-  "use strict";
-
-  // Mobile menu
-  var toggle = document.querySelector(".nav-toggle");
-  var nav = document.getElementById("site-nav");
-  if (toggle && nav) {
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.textContent = open ? "Close" : "Menu";
-    });
-  }
-
-  // Scroll reveal
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var items = document.querySelectorAll(".fade-up");
-  if (reduce || !("IntersectionObserver" in window)) {
-    items.forEach(function (el) { el.classList.add("in"); });
-    return;
-  }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("in");
-        io.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-
-  items.forEach(function (el, i) {
-    el.style.transitionDelay = (i % 4) * 60 + "ms";
-    io.observe(el);
-  });
+'use strict';
+const toggle=document.querySelector('.nav-toggle'), nav=document.getElementById('site-nav');
+if(toggle&&nav){document.documentElement.classList.add('has-menu');toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'Close':'Menu';});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('open')){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='Menu';toggle.focus();}});}
+document.querySelectorAll('.print-button').forEach(b=>b.addEventListener('click',()=>window.print()));
+document.querySelectorAll('.signup-form,.contact-form').forEach(form=>form.addEventListener('submit',async e=>{
+e.preventDefault();const button=form.querySelector('button'),status=form.querySelector('.form-status'),contact=form.classList.contains('contact-form');button.disabled=true;status.textContent='Submitting…';
+try{const response=await fetch(contact?'/':form.action,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:new URLSearchParams(new FormData(form)).toString(),signal:AbortSignal.timeout(20000)});
+if(contact){if(!response.ok)throw new Error('Your message could not be submitted. Please try again or email mail@capitalandfreedom.com.');}
+else{const data=await response.json().catch(()=>({}));if(!response.ok||!data.ok)throw new Error(data.message||'Signup is temporarily unavailable. Please try again later. You can still use all the free tools.');if(data.pending){status.textContent=data.message;form.reset();return;}}
+window.location.href='/thank-you?type='+(contact?'contact':'newsletter');
+}catch(err){status.textContent=err.name==='TimeoutError'?'This is taking longer than expected. Please try again in a moment.':err.message;}finally{button.disabled=false;}
+}));
+const message=document.getElementById('submission-message');if(message){const type=new URLSearchParams(window.location.search).get('type');if(type==='contact')message.textContent='Thank you. Your message has been submitted.';if(type==='newsletter')message.textContent='Thank you for subscribing. If a confirmation email arrives, please confirm your address. You can start learning below.';}
 })();
